@@ -54,6 +54,11 @@ public class PublicController {
         return mediaService.getMediaByAssociation(MediaEntity.AssociatedType.SERVICE, id);
     }
 
+    @GetMapping("/gallery/event/{id}")
+    public List<MediaEntity> getEventGallery(@PathVariable String id) {
+        return mediaService.getMediaByAssociation(MediaEntity.AssociatedType.EVENT, id);
+    }
+
     @PostMapping("/contact")
     public ResponseEntity<ContactInquiry> submitInquiry(@RequestBody ContactInquiry inquiry) {
         return ResponseEntity.ok(contactService.saveInquiry(inquiry));

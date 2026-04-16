@@ -70,6 +70,18 @@ public class AdminController {
         return ResponseEntity.ok(eventRepository.save(event));
     }
 
+    @PutMapping("/events/{id}")
+    public ResponseEntity<EventEntity> updateEvent(@PathVariable String id, @RequestBody EventEntity event) {
+        event.setId(id);
+        return ResponseEntity.ok(eventRepository.save(event));
+    }
+
+    @DeleteMapping("/events/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable String id) {
+        eventRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     // Media Upload
     @PostMapping("/media/upload")
     public ResponseEntity<MediaEntity> uploadMedia(
