@@ -4,9 +4,11 @@ import com.example.staracademybackend.model.ContactInquiry;
 import com.example.staracademybackend.model.EventEntity;
 import com.example.staracademybackend.model.MediaEntity;
 import com.example.staracademybackend.model.ServiceEntity;
+import com.example.staracademybackend.model.AwardEntity;
 import com.example.staracademybackend.model.Status;
 import com.example.staracademybackend.repository.EventRepository;
 import com.example.staracademybackend.repository.ServiceRepository;
+import com.example.staracademybackend.repository.AwardRepository;
 import com.example.staracademybackend.service.ContactService;
 import com.example.staracademybackend.service.MediaService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class PublicController {
 
     private final ServiceRepository serviceRepository;
     private final EventRepository eventRepository;
+    private final AwardRepository awardRepository;
     private final MediaService mediaService;
     private final ContactService contactService;
 
@@ -57,6 +60,16 @@ public class PublicController {
     @GetMapping("/gallery/event/{id}")
     public List<MediaEntity> getEventGallery(@PathVariable String id) {
         return mediaService.getMediaByAssociation(MediaEntity.AssociatedType.EVENT, id);
+    }
+
+    @GetMapping("/awards")
+    public List<AwardEntity> getAwards() {
+        return awardRepository.findByStatus(Status.ACTIVE);
+    }
+
+    @GetMapping("/gallery/award/{id}")
+    public List<MediaEntity> getAwardGallery(@PathVariable String id) {
+        return mediaService.getMediaByAssociation(MediaEntity.AssociatedType.AWARD, id);
     }
 
     @PostMapping("/contact")

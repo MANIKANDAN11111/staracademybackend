@@ -11,22 +11,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "media")
-public class MediaEntity {
+@Document(collection = "awards")
+public class AwardEntity {
     @Id
     private String id;
     private String title;
-    private String s3Key;
-    private String s3Url;
-    private MediaType type;
-    private AssociatedType associatedType;
-    private String associatedId;
-
-    public enum MediaType {
-        IMAGE, VIDEO
-    }
-
-    public enum AssociatedType {
-        SERVICE, EVENT, AWARD
-    }
+    private Status status;
 }

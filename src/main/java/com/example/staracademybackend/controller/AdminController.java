@@ -6,8 +6,10 @@ import com.example.staracademybackend.model.ContactInquiry;
 import com.example.staracademybackend.model.EventEntity;
 import com.example.staracademybackend.model.MediaEntity;
 import com.example.staracademybackend.model.ServiceEntity;
+import com.example.staracademybackend.model.AwardEntity;
 import com.example.staracademybackend.repository.EventRepository;
 import com.example.staracademybackend.repository.ServiceRepository;
+import com.example.staracademybackend.repository.AwardRepository;
 import com.example.staracademybackend.service.AuthService;
 import com.example.staracademybackend.service.ContactService;
 import com.example.staracademybackend.service.MediaService;
@@ -27,6 +29,7 @@ public class AdminController {
     private final AuthService authService;
     private final ServiceRepository serviceRepository;
     private final EventRepository eventRepository;
+    private final AwardRepository awardRepository;
     private final MediaService mediaService;
     private final ContactService contactService;
 
@@ -79,6 +82,29 @@ public class AdminController {
     @DeleteMapping("/events/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable String id) {
         eventRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Awards CRUD
+    @GetMapping("/awards")
+    public List<AwardEntity> getAllAwards() {
+        return awardRepository.findAll();
+    }
+
+    @PostMapping("/awards")
+    public ResponseEntity<AwardEntity> createAward(@RequestBody AwardEntity award) {
+        return ResponseEntity.ok(awardRepository.save(award));
+    }
+
+    @PutMapping("/awards/{id}")
+    public ResponseEntity<AwardEntity> updateAward(@PathVariable String id, @RequestBody AwardEntity award) {
+        award.setId(id);
+        return ResponseEntity.ok(awardRepository.save(award));
+    }
+
+    @DeleteMapping("/awards/{id}")
+    public ResponseEntity<Void> deleteAward(@PathVariable String id) {
+        awardRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
