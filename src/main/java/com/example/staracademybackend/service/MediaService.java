@@ -3,6 +3,7 @@ package com.example.staracademybackend.service;
 import com.example.staracademybackend.model.MediaEntity;
 import com.example.staracademybackend.repository.MediaRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MediaService {
 
     private final S3Service s3Service;
@@ -55,8 +57,17 @@ public class MediaService {
 
     public void deleteMedia(String id) {
         mediaRepository.findById(id).ifPresent(media -> {
-            s3Service.deleteFile(media.getS3Key());
+            try {
+                if (media.getS3Key() != null) {
+                    s3Service.deleteFile(media.getS3Key());
+                }
+            } catch (Exception e) {
+                log.error("Failed to delete S3 file for media {}: {}", id, e.getMessage());
+                // Rethrow to maintain the 403 transparency (AWS vs Spring)
+                throw e; 
+            }
             mediaRepository.deleteById(id);
+            log.info("Successfully removed media record from DB: {}", id);
         });
     }
 }

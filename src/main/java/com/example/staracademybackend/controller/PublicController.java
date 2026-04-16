@@ -41,7 +41,7 @@ public class PublicController {
 
     @GetMapping("/events")
     public List<EventEntity> getEvents() {
-        return eventRepository.findByStatusIn(Arrays.asList(Status.UPCOMING, Status.ONGOING));
+        return eventRepository.findAll();
     }
 
     @GetMapping("/gallery")
